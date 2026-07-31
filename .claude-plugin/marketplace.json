@@ -8,6 +8,16 @@
       "name": "secure-coding",
       "source": "./secure-coding",
       "description": "The secure-coding role on contract v3 (issue-160 round-3 promotion). Decides: 구현이 공격에 견디는가."
+    },
+    {
+      "name": "asvs-verification",
+      "source": "./asvs-verification",
+      "description": "ASVS methodology plugin for the secure-coding role: verification-level (L1/L2/L3) selection before requirement enumeration, and a level-scoped requirement checklist, gated at phase-1 and phase-2 writes."
+    },
+    {
+      "name": "cwe-cvss-findings",
+      "source": "./cwe-cvss-findings",
+      "description": "CWE + CVSS methodology plugin for the secure-coding role: every weakness finding CWE-ID-tagged and CVSS-severity-scored (or explicit N/A), gated at the phase-2 record."
     }
   ]
 }

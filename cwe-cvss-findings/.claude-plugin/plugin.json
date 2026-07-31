@@ -1,0 +1,7 @@
+{
+  "name": "cwe-cvss-findings",
+  "description": "CWE + CVSS methodology plugin for the secure-coding role: every weakness finding must be CWE-ID-tagged and CVSS-severity-scored, with reproduction and remediation status, or an explicit N/A — none found, for the secure-coding role's phase-2 record.",
+  "author": {
+    "name": "Jung Jiwon & Lee Jongkwan"
+  }
+}
