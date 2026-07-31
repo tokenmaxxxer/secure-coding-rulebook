@@ -32,8 +32,9 @@ installed alongside `secure-coding` — this rulebook no longer vendors either.
   fires the role-agnostic gates globally; nothing to register here)
 - `secure-coding/hooks/directive.sh` — SessionStart role directive, canon stub
   form (sources `core/hooks/lib/role-directive.sh`)
-- `secure-coding/hooks/tests/stub-check.sh` — vendored verbatim from core;
-  fails if a vendored copy of a core-canon gate reappears under this tree
+- `stub-check.sh` — no longer vendored here; reference-executed from
+  core (`core/hooks/tests/stub-check.sh`) against `secure-coding/`, per
+  `docs/handbooks/canon-scripts.md` (see `docs/issue-5/reports/implementation.md`)
 - `docs/specs/approvers.md` — Approve-authority allowlist (see below)
 
 This is scaffolding, not a finished rulebook: fill in doctrine detail,
