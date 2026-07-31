@@ -1,0 +1,7 @@
+{
+  "name": "asvs-verification",
+  "description": "ASVS methodology plugin for the secure-coding role: pick a verification level (L1/L2/L3) before enumerating requirements, and produce a level-scoped requirement checklist. Gates docs/issue-<n>/proposals/*secure-coding*.md (phase 1) and docs/issue-<n>/reports/secure-coding.md (phase 2).",
+  "author": {
+    "name": "Jung Jiwon & Lee Jongkwan"
+  }
+}
