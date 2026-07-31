@@ -13,19 +13,27 @@ generated as skeleton scaffolding by issue-170.
 ## Install
 
 ```
+claude plugin marketplace add tokenmaxxxer/tokenmaxxxer-core
+claude plugin install core
+claude plugin install warrant
 claude plugin marketplace add tokenmaxxxer/secure-coding-rulebook
 claude plugin install secure-coding
 ```
 
+`core` supplies the role-agnostic gates (trailer/record-fields/handbook-trigger,
+registered globally by `core/hooks/hooks.json`) and the `role-directive.sh`
+stub library. `warrant` supplies the rotating-stance hunt agent. Both must be
+installed alongside `secure-coding` — this rulebook no longer vendors either.
+
 ## Layout
 
 - `secure-coding/.claude-plugin/plugin.json` — plugin manifest
-- `secure-coding/hooks/hooks.json` — SessionStart + PreToolUse wiring
-- `secure-coding/hooks/directive.sh` — SessionStart role directive
-- `secure-coding/hooks/record-fields-gate.sh` — this role's record required-field gate
-- `secure-coding/hooks/trailer-gate.sh` — commit `Subject: issue-<n>` trailer gate
-- `secure-coding/hooks/handbook-trigger-gate.sh` — s21 handbook-sync gate
-- `secure-coding/agents/warrant-hunter.md` — rotating-stance hunt agent
+- `secure-coding/hooks/hooks.json` — SessionStart wiring (core's own hooks.json
+  fires the role-agnostic gates globally; nothing to register here)
+- `secure-coding/hooks/directive.sh` — SessionStart role directive, canon stub
+  form (sources `core/hooks/lib/role-directive.sh`)
+- `secure-coding/hooks/tests/stub-check.sh` — vendored verbatim from core;
+  fails if a vendored copy of a core-canon gate reappears under this tree
 - `docs/specs/approvers.md` — Approve-authority allowlist (see below)
 
 This is scaffolding, not a finished rulebook: fill in doctrine detail,
