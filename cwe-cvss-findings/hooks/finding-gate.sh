@@ -25,7 +25,7 @@
 # Kill switch: export CWE_CVSS_FINDINGS_OFF=1 — only a recognized
 # on-spelling (1/true/yes/on) disables; empty, a recognized off-spelling, or
 # any unrecognized value all keep the gate active.
-. "${CORE_PLUGIN_ROOT:-$CLAUDE_PLUGIN_ROOT/../core}/hooks/lib/gate-lib.sh"
+. "${CLAUDE_PLUGIN_ROOT_CORE:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../../core" && pwd -P)}/hooks/lib/gate-lib.sh" || { echo "finding-gate.sh: cannot source gate-lib.sh" >&2; exit 2; }
 gate_trap_fail_closed
 set -uo pipefail
 

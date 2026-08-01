@@ -273,5 +273,25 @@ trap_at_top() {
 }
 trap_at_top
 
+# --- missing-core: CLAUDE_PLUGIN_ROOT_CORE points at a nonexistent path -----
+# and no relative ../../core fallback is reachable (run from a scratch cwd) —
+# the gate must fail closed (exit 2) with a source-failure message, not
+# silently allow (regression for the confirmed unguarded-source bug).
+
+missing_core() {
+  mktd
+  bogus="$(mktemp -u)/no-such-core"
+  out="$(cd "$td" && printf '{"tool_name":"Write","tool_input":{"file_path":"%s","content":"garbage"}}' "$PHASE1_PATH" | env CLAUDE_PROJECT_DIR="$td" CLAUDE_PLUGIN_ROOT_CORE="$bogus" /bin/bash "$GATE" 2>&1 1>/dev/null)"
+  rc=$?
+  rm -rf "$td"
+  case "$rc" in 0) got=allow ;; 2) got=deny ;; *) got="exit-$rc" ;; esac
+  report deny "$got" "missing-core-fail-closed"
+  case "$out" in
+    *"cannot source"*) : ;;
+    *) fail=$((fail + 1)); printf 'FAIL   missing-core-message missing "cannot source" (got: %s)\n' "$out" ;;
+  esac
+}
+missing_core
+
 printf '\n== %d passed, %d failed ==\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]
