@@ -1,8 +1,7 @@
 # secure-coding-rulebook
 
 Rulebook for the `secure-coding` role (contract v3 role-handoff protocol), split off
-per `docs/issue-160/proposals/role-taxonomy.md`'s round-3 promotion and
-generated as skeleton scaffolding by issue-170.
+per `docs/issue-160/proposals/role-taxonomy.md`'s round-3 promotion.
 
 - **decides**: 구현이 공격에 견디는가
 - **use_when**: 인증/입력처리 코드 랜딩 후
@@ -35,8 +34,21 @@ installed alongside `secure-coding` — this rulebook no longer vendors either.
 - `stub-check.sh` — no longer vendored here; reference-executed from
   core (`core/hooks/tests/stub-check.sh`) against `secure-coding/`, per
   `docs/handbooks/canon-scripts.md` (see `docs/issue-5/reports/implementation.md`)
+- `asvs-verification/.claude-plugin/plugin.json` — plugin manifest
+- `asvs-verification/hooks/hooks.json` — PreToolUse wiring for `level-gate.sh`
+  (`Write|Edit|MultiEdit`)
+- `asvs-verification/hooks/level-gate.sh` — PreToolUse gate enforcing the
+  ASVS phase-split norm on `docs/issue-<n>/proposals/*secure-coding*.md`
+  and `docs/issue-<n>/reports/secure-coding.md`
+- `asvs-verification/hooks/directive.sh` — UserPromptSubmit reminder,
+  canon stub form (sources `core/hooks/lib/role-directive.sh`)
+- `asvs-verification/hooks/tests/run-level-gate-tests.sh` — gate test suite
+- `cwe-cvss-findings/.claude-plugin/plugin.json` — plugin manifest
+- `cwe-cvss-findings/hooks/hooks.json` — PreToolUse wiring for
+  `finding-gate.sh` (`Write|Edit|MultiEdit`)
+- `cwe-cvss-findings/hooks/finding-gate.sh` — PreToolUse gate enforcing
+  CWE-tagged, CVSS-scored findings on `docs/issue-<n>/reports/secure-coding.md`
+- `cwe-cvss-findings/hooks/directive.sh` — UserPromptSubmit reminder,
+  canon stub form (sources `core/hooks/lib/role-directive.sh`)
+- `cwe-cvss-findings/hooks/tests/run-finding-gate-tests.sh` — gate test suite
 - `docs/specs/approvers.md` — Approve-authority allowlist (see below)
-
-This is scaffolding, not a finished rulebook: fill in doctrine detail,
-handoff enforcement, and any role-specific progress gate before treating
-it as load-bearing.

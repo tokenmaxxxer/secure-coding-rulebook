@@ -216,6 +216,29 @@ case "$trap_at_top_out" in
   *) fail=$((fail + 1)); printf 'FAIL trap-at-top-message missing "fail-closed" (got: %s)\n' "$trap_at_top_out" ;;
 esac
 
+# --- missing-core: CLAUDE_PLUGIN_ROOT_CORE points at a nonexistent path -----
+# and no relative ../../core fallback is reachable (run from a scratch cwd) —
+# the gate must fail closed (exit 2) with a source-failure message, not
+# silently allow (regression for the confirmed unguarded-source bug).
+
+missing_core() {
+  td="$(mktemp -d)"
+  bogus="$(mktemp -u)/no-such-core"
+  p="$(python3 -c '
+import json, sys
+print(json.dumps({"tool_name":"Write","tool_input":{"file_path": sys.argv[1] + "/docs/issue-10/reports/secure-coding.md","content":"Findings: N/A — none found."}}))
+' "$td")"
+  out="$(cd "$td" && printf '%s' "$p" | env CLAUDE_PROJECT_DIR="$td" CLAUDE_PLUGIN_ROOT_CORE="$bogus" "$GATE" 2>&1 1>/dev/null)"
+  rc=$?
+  rm -rf "$td"
+  report 2 "$rc" "missing-core-fail-closed"
+  case "$out" in
+    *"cannot source"*) : ;;
+    *) fail=$((fail + 1)); printf 'FAIL missing-core-message missing "cannot source" (got: %s)\n' "$out" ;;
+  esac
+}
+missing_core
+
 echo
 printf 'cwe-cvss-findings: %d passed, %d failed\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]
