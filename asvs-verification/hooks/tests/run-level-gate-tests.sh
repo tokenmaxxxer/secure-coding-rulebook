@@ -11,10 +11,14 @@ ROOT="$(cd "$HERE/../../.." && pwd -P)"
 
 # gate-lib.sh/gate-lib.py are core canon (docs/issue-13/proposals/gate-a-plus.md
 # section 0) — referenced, never vendored. This harness runs the gate as a
-# bare subprocess with no Claude Code plugin context, so CORE_PLUGIN_ROOT
-# must be pointed at a real core canon checkout; the gate itself still
-# falls back to "$CLAUDE_PLUGIN_ROOT/../core" at real runtime.
-if [ -z "${CORE_PLUGIN_ROOT:-}" ]; then
+# bare subprocess with no Claude Code plugin context, so CLAUDE_PLUGIN_ROOT_CORE
+# (the variable the gate scripts themselves read) must be pointed at a real
+# core canon checkout; the gate itself still falls back to
+# "$CLAUDE_PLUGIN_ROOT/../core" at real runtime. CORE_PLUGIN_ROOT is a
+# back-compat alias: honored only when CLAUDE_PLUGIN_ROOT_CORE is unset.
+if [ -n "${CLAUDE_PLUGIN_ROOT_CORE:-}" ]; then
+  CORE_PLUGIN_ROOT="$CLAUDE_PLUGIN_ROOT_CORE"
+elif [ -z "${CORE_PLUGIN_ROOT:-}" ]; then
   for c in \
     "$HOME/.claude/plugins/marketplaces/tokenmaxxxer/runs/rulebooks/tokenmaxxxer-core/core" \
     "$ROOT/../tokenmaxxxer-core/core"; do

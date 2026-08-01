@@ -174,3 +174,86 @@ confirming the explicit-override regression case is unaffected by the
 None. All A+ 인증 차단 사유 named in issue #19 are resolved: the
 `CORE_PLUGIN_ROOT`/`CLAUDE_PLUGIN_ROOT_CORE` mismatch is fixed for both
 gate test harnesses and confirmed green on a clean-clone-equivalent run.
+
+## Addendum (재인증 스팟 체크 잔여 해소)
+
+The re-audit spot-check (issue #19 comment) found the `:=`-forwarding
+fix above insufficient: `run-level-gate-tests.sh:17` and
+`run-finding-gate-tests.sh:17` still gate discovery on
+`[ -z "${CORE_PLUGIN_ROOT:-}" ]` only. A clean clone with **only**
+`CLAUDE_PLUGIN_ROOT_CORE` set (no `CORE_PLUGIN_ROOT`) never satisfies
+that check, falls through to the hardcoded auto-discovery paths, and (if
+those paths miss) exits 1 with "set `CORE_PLUGIN_ROOT` ..." — even though
+a valid `CLAUDE_PLUGIN_ROOT_CORE` was supplied. This directly contradicts
+the "Verification" section above, which only ever exercised
+`CORE_PLUGIN_ROOT`-only and neither-set, never `CLAUDE_PLUGIN_ROOT_CORE`
+alone.
+
+**Fix**: both harness scripts now check `CLAUDE_PLUGIN_ROOT_CORE` first —
+if set, it is used directly as `CORE_PLUGIN_ROOT` and discovery is
+skipped entirely; auto-discovery only runs when both are unset.
+`CORE_PLUGIN_ROOT` remains a back-compat alias, honored only when
+`CLAUDE_PLUGIN_ROOT_CORE` is unset:
+
+```bash
+if [ -n "${CLAUDE_PLUGIN_ROOT_CORE:-}" ]; then
+  CORE_PLUGIN_ROOT="$CLAUDE_PLUGIN_ROOT_CORE"
+elif [ -z "${CORE_PLUGIN_ROOT:-}" ]; then
+  for c in ...; do ...; done
+fi
+```
+
+(`asvs-verification/hooks/tests/run-level-gate-tests.sh`,
+`cwe-cvss-findings/hooks/tests/run-finding-gate-tests.sh`.)
+
+Handbook and README updates for the primary/alias variable naming:
+`docs/handbooks/asvs-verification-level-gate.md:34-39`,
+`docs/handbooks/cwe-cvss-findings-finding-gate.md:34-39`,
+`asvs-verification/README.md:30,90-92`, `cwe-cvss-findings/README.md:42`
+now describe `CLAUDE_PLUGIN_ROOT_CORE` as the primary variable (the one
+the gate scripts themselves read) and `CORE_PLUGIN_ROOT` as a back-compat
+alias honored only when it is unset — replacing the prior (inaccurate)
+"forwards discovery automatically" phrasing that implied
+`CORE_PLUGIN_ROOT` remained the entry point.
+
+### CWE/CVSS findings (addendum)
+
+N/A — none found. Same class of fix as the original delivery: harness
+control-flow / documentation wiring, not a weakness remediation.
+
+### Verification (addendum): `CLAUDE_PLUGIN_ROOT_CORE` set alone, `CORE_PLUGIN_ROOT` unset
+
+```
+$ env -u CORE_PLUGIN_ROOT CLAUDE_PLUGIN_ROOT_CORE="$CORE" bash asvs-verification/hooks/tests/run-level-gate-tests.sh
+...
+== 31 passed, 0 failed ==
+
+$ env -u CORE_PLUGIN_ROOT CLAUDE_PLUGIN_ROOT_CORE="$CORE" bash cwe-cvss-findings/hooks/tests/run-finding-gate-tests.sh
+...
+cwe-cvss-findings: 22 passed, 0 failed
+```
+
+Both suites full-green with only `CLAUDE_PLUGIN_ROOT_CORE` set — the
+exact scenario the re-audit flagged as failing. Re-confirmed the two
+previously-passing scenarios are unaffected:
+
+```
+$ env -u CLAUDE_PLUGIN_ROOT_CORE CORE_PLUGIN_ROOT="$CORE" bash asvs-verification/hooks/tests/run-level-gate-tests.sh | tail -1
+== 31 passed, 0 failed ==
+$ env -u CLAUDE_PLUGIN_ROOT_CORE CORE_PLUGIN_ROOT="$CORE" bash cwe-cvss-findings/hooks/tests/run-finding-gate-tests.sh | tail -1
+cwe-cvss-findings: 22 passed, 0 failed
+
+$ env -u CLAUDE_PLUGIN_ROOT_CORE -u CORE_PLUGIN_ROOT bash asvs-verification/hooks/tests/run-level-gate-tests.sh | tail -1
+== 31 passed, 0 failed ==
+$ env -u CLAUDE_PLUGIN_ROOT_CORE -u CORE_PLUGIN_ROOT bash cwe-cvss-findings/hooks/tests/run-finding-gate-tests.sh | tail -1
+cwe-cvss-findings: 22 passed, 0 failed
+```
+
+`missing-core-fail-closed` (both suites, unchanged) still exercises an
+explicit bad `CLAUDE_PLUGIN_ROOT_CORE` pointed at the gate directly and
+still denies (exit 2) — unaffected by this harness-level reordering.
+
+### Open findings (addendum)
+
+None. The re-audit's named residual gap — `CLAUDE_PLUGIN_ROOT_CORE` set
+alone failing on a clean clone — is resolved and confirmed green above.
