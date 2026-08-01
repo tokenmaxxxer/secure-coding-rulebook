@@ -39,7 +39,7 @@ design this plugin is one piece of.
 
 - A `PreToolUse` gate, `hooks/finding-gate.sh`, fires on `Write`/`Edit`/
   `MultiEdit` calls. It sources core canon's `gate-lib.sh`/`gate-lib.py`
-  (`${CORE_PLUGIN_ROOT:-$CLAUDE_PLUGIN_ROOT/../core}/hooks/lib/gate-lib.sh`,
+  (`${CLAUDE_PLUGIN_ROOT_CORE:-$CLAUDE_PLUGIN_ROOT/../core}/hooks/lib/gate-lib.sh`,
   core issue #72) for the fail-closed EXIT trap, the kill switch
   (`gate_kill_switch_active`), malformed-JSON deny
   (`gate_parse_json_or_deny`), path normalization (`gate_normalize_path`),

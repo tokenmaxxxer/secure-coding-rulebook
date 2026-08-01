@@ -27,7 +27,7 @@ norms in `docs/issue-10/proposals/enforcement-machine.md` section (iv).
 
 - `hooks/level-gate.sh` — a `PreToolUse` gate registered in
   `hooks/hooks.json` for `Write|Edit|MultiEdit`. It sources core canon's
-  `gate-lib.sh`/`gate-lib.py` (`${CORE_PLUGIN_ROOT:-$CLAUDE_PLUGIN_ROOT/../core}/hooks/lib/gate-lib.sh`,
+  `gate-lib.sh`/`gate-lib.py` (`${CLAUDE_PLUGIN_ROOT_CORE:-$CLAUDE_PLUGIN_ROOT/../core}/hooks/lib/gate-lib.sh`,
   core issue #72) for the fail-closed EXIT trap (`gate_trap_fail_closed`),
   the kill switch (`gate_kill_switch_active`), malformed-JSON deny
   (`gate_parse_json_or_deny`), path normalization (`gate_normalize_path`),
@@ -87,9 +87,11 @@ norms in `docs/issue-10/proposals/enforcement-machine.md` section (iv).
   payloads, including the Edit/MultiEdit `replace_all`, malformed-JSON,
   kill-switch-unrecognized-value, absolute-path, and trap-at-top cases
   from `docs/issue-13/proposals/gate-a-plus.md` section 4. It runs the
-  gate with no Claude Code plugin context, so it resolves `CORE_PLUGIN_ROOT`
-  itself against a local core canon checkout (see the script header) —
-  the gate's own runtime fallback is `$CLAUDE_PLUGIN_ROOT/../core`.
+  gate with no Claude Code plugin context, so it resolves
+  `CLAUDE_PLUGIN_ROOT_CORE` itself against a local core canon checkout
+  (`CORE_PLUGIN_ROOT` is a back-compat alias, honored only when
+  `CLAUDE_PLUGIN_ROOT_CORE` is unset — see the script header) — the gate's
+  own runtime fallback is `$CLAUDE_PLUGIN_ROOT/../core`.
 
 ## Install
 

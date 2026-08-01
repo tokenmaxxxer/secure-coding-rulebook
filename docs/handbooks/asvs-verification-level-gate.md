@@ -31,13 +31,12 @@ Kill switch: `export ASVS_VERIFICATION_OFF=1` — only a recognized
 on-spelling (`1`/`true`/`yes`/`on`) disables; any unrecognized value stays
 active.
 
-Run its tests (needs `CORE_PLUGIN_ROOT` pointed at a `tokenmaxxxer-core`
+Run its tests (needs `CLAUDE_PLUGIN_ROOT_CORE` pointed at a `tokenmaxxxer-core`
 checkout with `gate-lib.sh` landed — the script auto-detects the common
-marketplace-install location, or set it explicitly; the harness forwards
-this discovery into `CLAUDE_PLUGIN_ROOT_CORE` automatically for every
-gate-invoking call site, so setting `CORE_PLUGIN_ROOT` alone — or nothing,
-if auto-discovery finds a checkout — is enough for a green clean-clone
-run):
+marketplace-install location if unset, or set it explicitly; `CORE_PLUGIN_ROOT`
+is a back-compat alias honored only when `CLAUDE_PLUGIN_ROOT_CORE` is unset,
+so setting either one alone — or nothing, if auto-discovery finds a checkout
+— is enough for a green clean-clone run):
 
     bash asvs-verification/hooks/tests/run-level-gate-tests.sh
 
