@@ -4,21 +4,36 @@
 (Write|Edit|MultiEdit) that fires only on writes resolving to
 `docs/issue-<n>/proposals/*secure-coding*.md` (phase-1) or
 `docs/issue-<n>/reports/secure-coding.md` (phase-2); every other path is
-allowed without content evaluation. It reconstructs the resulting document
-from the tool input (Write's `content`, or Edit/MultiEdit's `old_string`→
-`new_string` applied to the current file) and fails closed (exit 2) if that
-reconstruction is not possible.
+allowed without content evaluation. It sources core canon's
+`gate-lib.sh`/`gate-lib.py` (`${CORE_PLUGIN_ROOT:-$CLAUDE_PLUGIN_ROOT/../core}/hooks/lib/gate-lib.sh`,
+core issue #72) for the fail-closed EXIT trap, kill switch, malformed-JSON
+deny, path normalization, and full Write/Edit/MultiEdit reconstruction
+(honoring `replace_all` per-edit) — none of that machinery is re-derived
+locally. Root resolution stays local: `CLAUDE_PROJECT_DIR` if set and a
+real directory, else `git rev-parse --show-toplevel` — never derived from
+the tool call's own `file_path`.
 
-Phase-1 requires, in order: an ASVS level token (`L1`/`L2`/`L3`) before the
-first ASVS requirement ID (`V\d+(\.\d+){1,3}`), at least one requirement ID,
-and a reference to the current-state survey. Phase-2 requires the level
-carried over, at least one requirement ID with a pass/fail token within 200
-characters, and a scope-covered summary phrase.
+Phase-1 requires, in order: an ASVS level token (`L1`/`L2`/`L3`) within 60
+characters of the word "level" on the same line, before the first ASVS
+requirement ID (`V\d+(\.\d+){1,3}`), at least one requirement ID, and a
+survey reference (the `current-state-survey` artifact token / a path
+citation outright, or a generic phrase mention adjacent to a
+backtick/path citation within 80 characters). Phase-2 requires the level
+carried over, **every** requirement ID occurrence with its own pass/fail
+token within its own row/list-item boundary (not just the first
+occurrence), and a scope-covered summary phrase.
 
-Kill switch: `export ASVS_VERIFICATION_OFF=1`.
+Kill switch: `export ASVS_VERIFICATION_OFF=1` — only a recognized
+on-spelling (`1`/`true`/`yes`/`on`) disables; any unrecognized value stays
+active.
 
-Run its tests directly, no setup required:
+Run its tests (needs `CORE_PLUGIN_ROOT` pointed at a `tokenmaxxxer-core`
+checkout with `gate-lib.sh` landed — the script auto-detects the common
+marketplace-install location, or set it explicitly):
 
     bash asvs-verification/hooks/tests/run-level-gate-tests.sh
 
-Basis: `docs/issue-10/proposals/enforcement-machine.md` section (iv).
+Basis: `docs/issue-10/proposals/enforcement-machine.md` section (iv);
+`docs/issue-13/proposals/gate-a-plus.md` (Gate A+ hardening);
+`docs/handbooks/gate-house-standard.md` (core issue #72, the referenced
+gate-lib contract).
