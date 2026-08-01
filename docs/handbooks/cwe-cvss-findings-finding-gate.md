@@ -33,9 +33,11 @@ active.
 
 Run its tests (needs `CORE_PLUGIN_ROOT` pointed at a `tokenmaxxxer-core`
 checkout with `gate-lib.sh` landed — the script auto-detects the common
-marketplace-install location, or set it explicitly; this is a distinct,
-test-harness-only variable from the gate's own `CLAUDE_PLUGIN_ROOT_CORE`
-runtime source line above):
+marketplace-install location, or set it explicitly; the harness forwards
+this discovery into `CLAUDE_PLUGIN_ROOT_CORE` automatically for every
+gate-invoking call site, so setting `CORE_PLUGIN_ROOT` alone — or nothing,
+if auto-discovery finds a checkout — is enough for a green clean-clone
+run):
 
     bash cwe-cvss-findings/hooks/tests/run-finding-gate-tests.sh
 

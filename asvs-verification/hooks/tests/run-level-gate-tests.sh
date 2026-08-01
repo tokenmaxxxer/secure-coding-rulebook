@@ -22,10 +22,12 @@ if [ -z "${CORE_PLUGIN_ROOT:-}" ]; then
   done
 fi
 [ -n "${CORE_PLUGIN_ROOT:-}" ] && [ -f "$CORE_PLUGIN_ROOT/hooks/lib/gate-lib.sh" ] || {
-  echo "run-level-gate-tests: cannot find core canon gate-lib.sh; set CORE_PLUGIN_ROOT to a checkout of tokenmaxxxer-core (core issue #72) before running this suite." >&2
+  echo "run-level-gate-tests: cannot find core canon gate-lib.sh; set CORE_PLUGIN_ROOT (or CLAUDE_PLUGIN_ROOT_CORE) to a checkout of tokenmaxxxer-core (core issue #72) before running this suite." >&2
   exit 1
 }
 export CORE_PLUGIN_ROOT
+: "${CLAUDE_PLUGIN_ROOT_CORE:=$CORE_PLUGIN_ROOT}"
+export CLAUDE_PLUGIN_ROOT_CORE
 
 pass=0
 fail=0
