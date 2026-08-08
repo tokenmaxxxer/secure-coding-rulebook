@@ -18,6 +18,13 @@
 #                         a bare severity adjective with no vector or score
 #                         does not satisfy this (gate-a-plus.md section 1a).
 #
+# Field vocabulary per roles/specs/secure-coding.spec.json (marketplace
+# issue #521): CWE-<digits> token <-> spec's cwe (ref, optional), pass/fail
+# label <-> spec's verdict (enum pass/fail), CVSS vector/band <-> spec's
+# severity (string, optional). reference_resolution (no orphan cwe
+# references) is checked_by on-the-record/hooks/role-spec-reference-guard.sh
+# (marketplace-side) — not forked here.
+#
 # Fail-closed machinery (EXIT trap, kill switch, JSON parse, Write/Edit/
 # MultiEdit reconstruction) is sourced from core canon, never re-derived
 # locally (docs/issue-13/proposals/gate-a-plus.md section 0; core issue #72).

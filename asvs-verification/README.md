@@ -23,6 +23,24 @@ This plugin does not re-decide L1/L2/L3 or the checklist rows themselves
 — it enforces that the shape exists at the right phase, per the phase
 norms in `docs/issue-10/proposals/enforcement-machine.md` section (iv).
 
+## Upstream spec vocabulary
+
+Per `roles/specs/secure-coding.spec.json` (marketplace issue #521), the
+requirement ID and level checks above correspond to the spec's required
+fields `requirement_id` (type `ref`) and `level` (enum `L1`/`L2`/`L3`); a
+pass/fail row corresponds to the spec's `verdict` (enum `pass`/`fail`).
+This plugin's `level-named`/`external-id-present`/`asvs-checklist` checks
+already enforce these in substance; this section only anchors the literal
+field names.
+
+The spec also states a `recomputation` rule: `level` is cumulative
+(L2 implies L1, L3 implies L1+L2), and overall pass/fail is the worst-case
+`verdict` across cited `requirement_id` checks at the declared level, never
+a standalone summary field. This rulebook documents that rule but does not
+enforce it — the spec's own `checked_by` for `recomputation` is `TBD`
+(issue-521 out-of-scope note), so this plugin defers the same way the spec
+does rather than forking a local recomputation gate.
+
 ## How it works
 
 - `hooks/level-gate.sh` — a `PreToolUse` gate registered in

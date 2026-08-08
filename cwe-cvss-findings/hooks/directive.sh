@@ -19,5 +19,10 @@ phase-2 record (docs/issue-<n>/reports/secure-coding.md) only — every
 weakness finding needs a CWE-ID token and a CVSS/severity-band label in the
 same block, or an explicit "N/A — none found" when there are no findings.
 See docs/issue-10/proposals/enforcement-machine.md.
+Field vocabulary: cwe, verdict, severity per
+roles/specs/secure-coding.spec.json (issue #521); reference_resolution
+(no orphan cwe) checked_by on-the-record/hooks/role-spec-reference-guard.sh.
+loop_state: checklisting/pentesting (progress), landed (terminal),
+target-level-undeclared (refusal), target-unreachable (error).
 EOF
 exit 0
