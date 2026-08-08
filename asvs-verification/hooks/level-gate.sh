@@ -14,6 +14,13 @@
 #     own pass/fail token within its own row/list-item boundary),
 #     scope-covered-summary
 #
+# Field vocabulary per roles/specs/secure-coding.spec.json (marketplace
+# issue #521): requirement ID <-> spec's requirement_id (ref), ASVS level
+# <-> spec's level (enum L1/L2/L3), pass/fail token <-> spec's verdict
+# (enum pass/fail). The spec's recomputation rule (cumulative level,
+# worst-case verdict) is documented, not enforced here — checked_by: TBD
+# per issue-521.
+#
 # Checks are section/adjacency/structural (docs/issue-13/proposals/gate-a-plus.md
 # section 2), not flat substring search: level-named and survey-reference
 # must sit in a line/section actually governed by the right heading or

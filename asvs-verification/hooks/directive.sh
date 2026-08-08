@@ -20,5 +20,10 @@ verification level (L1/L2/L3) BEFORE the first ASVS requirement ID, and cite
 the current-state survey. phase-2 record (docs/issue-<n>/reports/secure-coding.md)
 must carry the level, an ASVS checklist (requirement ID + pass/fail per row),
 and a scope-covered summary. See docs/issue-10/proposals/enforcement-machine.md.
+Field vocabulary: requirement_id, level, verdict per
+roles/specs/secure-coding.spec.json (issue #521); recomputation
+(cumulative level, worst-case verdict) is documented, checked_by: TBD.
+loop_state: checklisting/pentesting (progress), landed (terminal),
+target-level-undeclared (refusal), target-unreachable (error).
 EOF
 exit 0

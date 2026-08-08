@@ -35,6 +35,23 @@ design this plugin is one piece of.
   per-finding severity label — an empty finding list has no findings to
   score.
 
+## Upstream spec vocabulary
+
+Per `roles/specs/secure-coding.spec.json` (marketplace issue #521), a
+`CWE-<digits>` token corresponds to the spec's optional field `cwe` (type
+`ref`); the pass/fail-equivalent finding label corresponds to `verdict`
+(enum `pass`/`fail`); the CVSS vector/severity band corresponds to
+`severity` (type `string`, optional). `finding-list-or-na` and
+`cvss-labeled-severity` already enforce these in substance; this section
+only anchors the literal field names.
+
+This rulebook does not build a local orphan-reference check for `cwe`:
+the spec's `reference_resolution` rule ("no orphan references", i.e. every
+`cwe` must resolve to a real CWE identifier) names
+`on-the-record/hooks/role-spec-reference-guard.sh` (marketplace-side) as
+its `checked_by` script — this plugin defers to that gate rather than
+forking equivalent logic here.
+
 ## How it works
 
 - A `PreToolUse` gate, `hooks/finding-gate.sh`, fires on `Write`/`Edit`/

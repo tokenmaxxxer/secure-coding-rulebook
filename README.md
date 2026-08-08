@@ -8,6 +8,9 @@ per `docs/issue-160/proposals/role-taxonomy.md`'s round-3 promotion.
 - **produces**: ASVS checklist, pentest finding list w/ severity
 - **write_scope**: []
 - **hand-off**: 설계 단계 위협표면 재검토가 필요하면 → security-threat-model
+- **upstream spec**: `roles/specs/secure-coding.spec.json`
+  (`tokenmaxxxer/on-the-record` issue #521) — required fields, loop_state,
+  and use_when.board_condition basis; see `secure-coding/README.md`.
 
 ## Install
 
