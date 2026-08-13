@@ -55,3 +55,8 @@ installed alongside `secure-coding` — this rulebook no longer vendors either.
   canon stub form (sources `core/hooks/lib/role-directive.sh`)
 - `cwe-cvss-findings/hooks/tests/run-finding-gate-tests.sh` — gate test suite
 - `docs/specs/approvers.md` — Approve-authority allowlist (see below)
+- `playbook/` — operational decision-rule playbook (issue #1174):
+  condition -> choice -> source rules, one file per decision axis
+  (`input-validation-injection-defense.md`, `session-authentication.md`,
+  `authorization-access-control.md`, `cryptography-secrets-management.md`,
+  `dependency-supply-chain-security.md`)
