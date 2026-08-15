@@ -75,4 +75,14 @@ CWE-1104 Use of Unmaintained Third-Party Components).
    unmaintained third-party components" itself as the weakness, not
    only a component's individual vulnerabilities. source:
    https://cwe.mitre.org/data/definitions/1104.html
+
+9. When a NEW dependency is about to be added, check its maintenance
+   posture and any known-open vulnerabilities' actual exploitability
+   before it enters the manifest, rather than relying solely on the
+   post-acceptance scan/patch ladder (rules 1-8) to catch problems
+   later — a health check run at the moment of addition keeps an
+   already-risky component from becoming the project's problem in the
+   first place, and prioritizing by exploitability/reachability rather
+   than a flat CVSS-sorted list keeps the check from stalling on noise.
+   ASVS V14.2.1.
 </content>
