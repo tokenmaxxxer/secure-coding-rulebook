@@ -78,4 +78,13 @@ chapter, CWE-20/CWE-89/CWE-78 families).
    independently maintained copies of the same rule diverge over time
    and the looser one becomes the actual enforced policy. source:
    https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html
+
+10. When conducting a security review pass, scope it to the changed
+    lines and the trust boundaries they cross rather than re-scanning
+    the whole codebase on every pass, and explicitly triage out
+    low-signal or non-reachable pattern matches before they reach the
+    finding list instead of reporting every match — an unscoped,
+    unfiltered review does not scale to the review cadence a codebase
+    actually needs and buries the reachable findings under noise.
+    ASVS V5.1.3.
 </content>
